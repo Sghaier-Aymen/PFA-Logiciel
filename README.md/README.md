@@ -1,27 +1,18 @@
 # Projet de Fin d'Année : Automatisation des Ventes
-[cite_start]**Matière : Logiciels** [cite: 5]
-[cite_start]**Institution : Faculté des Sciences de Tunis** [cite: 3]
+[cite_start]**Institution :** Faculté des Sciences de Tunis [cite: 3]
+[cite_start]**Matière :** Logiciels [cite: 5]
 
 ## Description
-[cite_start]Ce projet consiste à automatiser l'analyse de données de e-commerce pour une entreprise utilisant initialement Excel[cite: 7]. [cite_start]L'objectif est de traiter un volume important de données via un script Python[cite: 8, 9].
+[cite_start]Ce projet automatise le traitement des données de vente d'une entreprise de e-commerce qui utilisait auparavant Excel[cite: 7]. [cite_start]Le script Python analyse un fichier CSV, calcule les indicateurs financiers et génère un rapport final[cite: 9].
 
-## Travail Réalisé
-Le script effectue les actions suivantes :
-1. [cite_start]Génération d'un fichier `ventes.csv`[cite: 12].
-2. [cite_start]Calcul du Chiffre d'Affaires Brut (Prix × Quantité)[cite: 18].
-3. [cite_start]Application des remises pour obtenir le CA Net[cite: 19].
-4. [cite_start]Calcul de la TVA (20%)[cite: 20].
-5. [cite_start]Identification du produit le plus rentable[cite: 22].
-6. [cite_start]Exportation des résultats dans `resultats_final.csv`[cite: 23].
+## Fonctionnalités
+- [cite_start]Calcul du Chiffre d'Affaires Brut et Net[cite: 18, 19].
+- [cite_start]Calcul automatique de la TVA à 20%[cite: 20].
+- [cite_start]Identification du produit le plus rentable[cite: 22].
+- [cite_start]Exportation des résultats vers `resultats_final.csv`[cite: 23].
 
-## Installation et Utilisation
-1. **Environnement virtuel** :
-   - Création : `python -m venv venv`
-   - Activation : `.\venv\Scripts\activate` (Windows)
-2. **Exécution** : 
-   - Lancer le script principal : `python main.py`
-
-## Technologies utilisées
-- [cite_start]**VS Code** comme environnement de développement[cite: 10].
-- [cite_start]**Python** pour l'automatisation[cite: 9].
-- [cite_start]**Git** pour le contrôle de version[cite: 31].
+## Utilisation
+1. Placez votre fichier `ventes.csv` dans le dossier racine.
+2. Lancez le script avec la commande :
+   ```bash
+   python main.py

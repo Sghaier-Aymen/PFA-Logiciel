@@ -1,18 +1,17 @@
 import csv
 
-def automatisation_ventes():
-    resultats = []
-    ca_total_net = 0
-    max_benefice = 0
-    id_meilleur_produit = None
+def traiter_ventes(fichier_entree, fichier_sortie):
+    donnees_finales = []
+    ca_total_entreprise = 0
+    meilleur_produit = {"ID": None, "Benefice": 0}
+    tva_taux = 0.20 [cite: 20]
 
-    # Lecture du fichier source
     try:
-        with open('ventes.csv', mode='r', encoding='utf-8') as fichier:
-            lecteur = csv.DictReader(fichier)
+        with open(fichier_entree, mode='r', newline='', encoding='utf-8') as f:
+            lecteur = csv.DictReader(f)
             
             for ligne in lecteur:
-                # Extraction et conversion des données
+                # Conversion des données
                 id_prod = ligne['ID']
                 prix = float(ligne['Prix'])
                 quantite = int(ligne['Quantite'])
@@ -21,40 +20,43 @@ def automatisation_ventes():
                 # 2. Calcul du Chiffre d'Affaires Brut [cite: 18]
                 ca_brut = prix * quantite
                 
-                # 3. Application des remises pour le CA Net [cite: 19]
+                # 3. Application de la remise pour le CA Net [cite: 19]
                 ca_net = ca_brut * (1 - remise_pourcent / 100)
                 
-                # 4. Calcul de la TVA (20%) sur le CA Net [cite: 20]
-                tva = ca_net * 0.20
+                # 4. Calcul de la TVA (20%) [cite: 20]
+                montant_tva = ca_net * tva_taux
                 
-                # Mise à jour du CA Total de l'entreprise [cite: 21]
-                ca_total_net += ca_net
+                # 5. Cumul pour le CA Total
+                ca_total_entreprise += ca_net
 
-                # 6. Identifier l'ID du produit avec le plus gros bénéfice [cite: 22]
-                if ca_net > max_benefice:
-                    max_benefice = ca_net
-                    id_meilleur_produit = id_prod
+                # 6. Identification du plus gros bénéfice [cite: 22]
+                if ca_net > meilleur_produit["Benefice"]:
+                    meilleur_produit = {"ID": id_prod, "Benefice": ca_net}
 
-                # Préparation des nouvelles données pour l'export [cite: 24]
-                ligne['CA_Net'] = round(ca_net, 2)
-                ligne['TVA'] = round(tva, 2)
-                resultats.append(ligne)
+                # Préparation de la ligne pour l'export [cite: 23, 24]
+                ligne.update({
+                    "CA_Brut": round(ca_brut, 2),
+                    "CA_Net": round(ca_net, 2),
+                    "TVA": round(montant_tva, 2)
+                })
+                donnees_finales.append(ligne)
 
-        # 5. Affichage des résultats dans la console [cite: 21, 22]
-        print(f"--- Rapport de Ventes ---")
-        print(f"CA Total de l'entreprise : {round(ca_total_net, 2)} DT")
-        print(f"Produit le plus rentable (ID) : {id_meilleur_produit}")
+        # 5. Affichage des résultats console [cite: 21]
+        print(f"--- Résultats de l'Analyse ---")
+        print(f"Chiffre d'Affaires Total : {ca_total_entreprise:.2f} DT")
+        print(f"Produit le plus performant : ID {meilleur_produit['ID']} ({meilleur_produit['Benefice']:.2f} DT)")
 
-        # 7. Exportation vers resultats_final.csv 
-        champs = ['ID', 'Prix', 'Quantite', 'Remise', 'CA_Net', 'TVA']
-        with open('resultats_final.csv', mode='w', newline='', encoding='utf-8') as export:
-            scripteur = csv.DictWriter(export, fieldnames=champs)
+        # 7. Exportation du fichier final [cite: 23]
+        champs = list(donnees_finales[0].keys())
+        with open(fichier_sortie, mode='w', newline='', encoding='utf-8') as f_out:
+            scripteur = csv.DictWriter(f_out, fieldnames=champs)
             scripteur.writeheader()
-            scripteur.writerows(resultats)
-        print("\nExportation réussie dans 'resultats_final.csv'")
+            scripteur.writerows(donnees_finales)
+            
+        print(f"\nFichier '{fichier_sortie}' généré avec succès.")
 
     except FileNotFoundError:
-        print("Erreur : Le fichier 'ventes.csv' est introuvable.")
+        print("Erreur : Le fichier ventes.csv est introuvable.")
 
 if __name__ == "__main__":
-    automatisation_ventes()
+    traiter_ventes('ventes.csv', 'resultats_final.csv')
