@@ -1,9 +1,6 @@
 import csv
 import sys
-
-# ─────────────────────────────────────────────
-# 1. Génération du fichier ventes.csv
-# ─────────────────────────────────────────────
+───────────────────────────────────────────
 data = [
     ['ID', 'Prix', 'Quantite', 'Remise'],
     [101, 15.0, 3, 10],
@@ -15,12 +12,8 @@ with open('ventes.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     writer.writerows(data)
 
-print("✅ ventes.csv généré avec succès.")
+print(" ventes.csv généré avec succès.")
 
-# ─────────────────────────────────────────────
-# Lecture et Traitement (Étapes 2 à 6)
-# Bonus : lecture dynamique (n'importe quel CSV)
-# ─────────────────────────────────────────────
 csv_file = sys.argv[1] if len(sys.argv) > 1 else 'ventes.csv'
 
 resultats = []
@@ -36,19 +29,17 @@ with open(csv_file, 'r') as f:
         quantite   = int(row['Quantite'])
         remise_pct = float(row['Remise'])
 
-        # 2. CA Brut
+
         ca_brut = prix * quantite
 
-        # 3. CA Net (après remise)
+   
         ca_net = ca_brut * (1 - remise_pct / 100)
 
-        # 4. TVA 20%
+    
         tva = ca_net * 0.20
 
-        # 5. CA Total
         ca_total_entreprise += ca_net
 
-        # 6. Meilleur bénéfice
         if ca_net > meilleur_benefice:
             meilleur_benefice   = ca_net
             id_meilleur_produit = id_prod
@@ -61,15 +52,14 @@ with open(csv_file, 'r') as f:
         resultats.append(row)
 
 # ─────────────────────────────────────────────
-# 5. Affichage
+
 # ─────────────────────────────────────────────
 print(f"\n📊 Résultats d'analyse :")
 print(f"   CA Total de l'entreprise : {ca_total_entreprise:.2f} DT")
 print(f"   Produit avec le plus gros bénéfice : ID {id_meilleur_produit} "
       f"({meilleur_benefice:.2f} DT)")
 
-# ─────────────────────────────────────────────
-# 7. Export resultats_final.csv
+
 # ─────────────────────────────────────────────
 fieldnames = ['ID', 'Prix', 'Quantite', 'Remise', 'CA_Brut', 'CA_Net', 'TVA']
 with open('resultats_final.csv', 'w', newline='') as f:
@@ -79,9 +69,7 @@ with open('resultats_final.csv', 'w', newline='') as f:
 
 print("\n✅ resultats_final.csv exporté avec succès.")
 
-# ─────────────────────────────────────────────
-# BONUS : Graphiques Matplotlib
-# ─────────────────────────────────────────────
+
 try:
     import matplotlib
     matplotlib.use('Agg')
@@ -121,7 +109,7 @@ try:
         ax1.text(bar.get_x() + bar.get_width()/2, h + 0.3, f'{h:.1f}',
                  ha='center', va='bottom', color='white', fontsize=7.5)
 
-    # ── Graphique 2 : Camembert CA Net par produit ──
+  
     ax2 = axes[1]
     ax2.set_facecolor('#1E293B')
     colors_pie = ['#38BDF8', '#34D399', '#FB923C']
@@ -145,7 +133,7 @@ try:
     plt.savefig('graphiques_ventes.png', dpi=150, bbox_inches='tight',
                 facecolor='#0F172A')
     plt.close()
-    print("✅ graphiques_ventes.png généré (bonus Matplotlib).")
+    print(" graphiques_ventes.png généré (bonus Matplotlib).")
 
 except ImportError:
     print("⚠️  Matplotlib non installé — graphiques ignorés.")
